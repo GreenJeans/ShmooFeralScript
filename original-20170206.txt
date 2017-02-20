@@ -30,6 +30,8 @@
 #       Maybe not a dps increase
 # Suggest Trinket use on Cooldown - instead of syncing with damage buffs
 #       Good for trinkets that don't get buffed (Kil'jaeden's for instance)
+# Suggest Maul instead of Ironfur
+#       Bad for mitigation, good for dps
 
 Include(ovale_common)
 Include(ovale_trinkets_mop)
@@ -667,6 +669,7 @@ AddIcon checkbox=opt_druid_feral_aoe help=cd specialization=feral
 
 AddCheckBox(opt_interrupt L(interrupt) default specialization=guardian)
 AddCheckBox(opt_melee_range L(not_in_melee_range) specialization=guardian)
+AddCheckBox(opt_suggest_maul "Suggest Maul instead of IronFur" specialization=guardian)
 
 AddFunction GuardianUseItemActions
 {
@@ -725,9 +728,13 @@ AddFunction GuardianDefaultShortCdActions
     #auto_attack
     GuardianGetInMeleeRange()
     #ironfur,if=buff.ironfur.down|rage.deficit<25
-    if target.IsAggroed() and { BuffExpires(ironfur_buff) or RageDeficit() < 25 } Spell(ironfur)
+    if target.IsAggroed() 
+        and { BuffExpires(ironfur_buff) or RageDeficit() < 25 }
+        and CheckBoxOff(opt_suggest_maul) Spell(ironfur)
     #maul
-    if not target.IsAggroed() and RageDeficit() < 25 Spell(maul)
+    if not target.IsAggroed() 
+        and RageDeficit() < 25
+        or CheckBoxOn(opt_suggest_maul) Spell(maul)
     #frenzied_regeneration,if=!ticking&incoming_damage_6s%health.max>0.25+(2-charges_fractional)*0.15
     if not BuffPresent(frenzied_regeneration_buff) and IncomingDamage(5) / MaxHealth() > 0.25 + { 2 - Charges(frenzied_regeneration count=0) } * 0.15 Spell(frenzied_regeneration)
     #bristling_fur,if=buff.ironfur.remains<2&rage<40
