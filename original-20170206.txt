@@ -24,6 +24,8 @@
 # Min targets to suggest Brutal Slash - Minimum number of targets to suggest using Brutal Slash.
 #       This will use all available Brutal Slash charges.
 #       Following setting will affect when these are used.
+# Rip/Rake/Moonfire/Savage Roar at x seconds - Refresh dots/buffs within a given window
+#       Refreshing earlier allows for more flexability and probably uptimes, Refreshing closer to pandemic could increase dps slightly
 
 Include(ovale_common)
 Include(ovale_trinkets_mop)
@@ -48,6 +50,92 @@ AddListItem(opt_desired_targets dt_6 "Min targets to suggest Brutal Slash = 6" s
 AddListItem(opt_desired_targets dt_7 "Min targets to suggest Brutal Slash = 7" specialization=feral)
 AddListItem(opt_desired_targets dt_8 "Min targets to suggest Brutal Slash = 8" specialization=feral)
 AddListItem(opt_desired_targets dt_9 "Min targets to suggest Brutal Slash = 9" specialization=feral)
+AddListItem(opt_rip_timer ript_1 "Rip at pandemic" specialization=feral)
+AddListItem(opt_rip_timer ript_5 "Rip at 5 seconds" specialization=feral)
+AddListItem(opt_rip_timer ript_6 "Rip at 6 seconds" specialization=feral)
+AddListItem(opt_rip_timer ript_7 "Rip at 7 seconds" specialization=feral)
+AddListItem(opt_rip_timer ript_8 "Rip at 8 seconds" specialization=feral)
+AddListItem(opt_rip_timer ript_9 "Rip at 9 seconds (default)" specialization=feral default)
+AddListItem(opt_rake_timer raket_0 "Rake at defaults" specialization=feral default)
+AddListItem(opt_rake_timer raket_1 "Rake at pandemic" specialization=feral)
+AddListItem(opt_rake_timer raket_3 "Rake at 3 seconds" specialization=feral)
+AddListItem(opt_rake_timer raket_4 "Rake at 4 seconds" specialization=feral)
+AddListItem(opt_rake_timer raket_5 "Rake at 5 seconds" specialization=feral)
+AddListItem(opt_rake_timer raket_6 "Rake at 6 seconds" specialization=feral)
+AddListItem(opt_rake_timer raket_7 "Rake at 7 seconds" specialization=feral)
+AddListItem(opt_rake_timer raket_8 "Rake at 8 seconds" specialization=feral)
+AddListItem(opt_rake_timer raket_9 "Rake at 9 seconds" specialization=feral)
+AddListItem(opt_savage_roar_timer srt_1 "Savage Roar at pandemic" specialization=feral)
+AddListItem(opt_savage_roar_timer srt_8 "Savage Roar at 8 seconds" specialization=feral)
+AddListItem(opt_savage_roar_timer srt_9 "Savage Roar at 9 seconds" specialization=feral)
+AddListItem(opt_savage_roar_timer srt_10 "Savage Roar at 10 seconds" specialization=feral)
+AddListItem(opt_savage_roar_timer srt_11 "Savage Roar at 11 seconds" specialization=feral)
+AddListItem(opt_savage_roar_timer srt_12 "Savage Roar at 12 seconds" specialization=feral)
+AddListItem(opt_savage_roar_timer srt_13 "Savage Roar at 13 seconds (default)" specialization=feral default)
+AddListItem(opt_moonfire_timer mt_1 "Moonfire at pandemic" specialization=feral)
+AddListItem(opt_moonfire_timer mt_5 "Moonfire at 5 seconds" specialization=feral)
+AddListItem(opt_moonfire_timer mt_6 "Moonfire at 6 seconds" specialization=feral)
+AddListItem(opt_moonfire_timer mt_7 "Moonfire at 7 seconds" specialization=feral)
+AddListItem(opt_moonfire_timer mt_8 "Moonfire at 8 seconds" specialization=feral)
+AddListItem(opt_moonfire_timer mt_9 "Moonfire at 9 seconds" specialization=feral default)
+
+AddFunction RipTimer asvalue=1
+{
+    if List(opt_rip_timer ript_1) BaseDuration(rip_debuff) * 0.3
+    if List(opt_rip_timer ript_5) 5
+    if List(opt_rip_timer ript_6) 6
+    if List(opt_rip_timer ript_7) 7
+    if List(opt_rip_timer ript_8) 8
+    if List(opt_rip_timer ript_9) 9
+}
+
+AddFunction SotfRakeTimer asvalue=1
+{
+    if List(opt_rake_timer raket_0) 5
+    if List(opt_rake_timer raket_1) BaseDuration(rake_debuff) * 0.3
+    if List(opt_rake_timer raket_3) 3
+    if List(opt_rake_timer raket_4) 4
+    if List(opt_rake_timer raket_5) 5
+    if List(opt_rake_timer raket_6) 6
+    if List(opt_rake_timer raket_7) 7
+    if List(opt_rake_timer raket_8) 8
+    if List(opt_rake_timer raket_9) 9
+
+}
+
+AddFunction RakeTimer asvalue=1
+{
+    if List(opt_rake_timer raket_0) 9
+    if List(opt_rake_timer raket_1) BaseDuration(rake_debuff) * 0.3
+    if List(opt_rake_timer raket_3) 3
+    if List(opt_rake_timer raket_4) 4
+    if List(opt_rake_timer raket_5) 5
+    if List(opt_rake_timer raket_6) 6
+    if List(opt_rake_timer raket_7) 7
+    if List(opt_rake_timer raket_8) 8
+    if List(opt_rake_timer raket_9) 9
+}
+
+AddFunction SavageRoarTimer asvalue=1
+{
+    if List(opt_savage_roar_timer srt_1) 7.2
+    if List(opt_savage_roar_timer srt_8) 8
+    if List(opt_savage_roar_timer srt_9) 9
+    if List(opt_savage_roar_timer srt_10) 10
+    if List(opt_savage_roar_timer srt_11) 11
+    if List(opt_savage_roar_timer srt_12) 12
+    if List(opt_savage_roar_timer srt_13) 13
+}
+
+AddFunction MoonfireTimer asvalue=1
+{
+    if List(opt_moonfire_timer mt_1) 4.2
+    if List(opt_moonfire_timer mt_5) 5
+    if List(opt_moonfire_timer mt_6) 6
+    if List(opt_moonfire_timer mt_7) 7
+    if List(opt_moonfire_timer mt_8) 8
+    if List(opt_moonfire_timer mt_9) 9
+}
 
 AddFunction BrutalSlashDesiredTargets asvalue=1
 {
@@ -234,15 +322,15 @@ AddFunction FeralFinisherMainActions
     #pool_resource,for_next=1
     #swipe_cat,if=spell_targets.swipe_cat>=8
     if Enemies() >= 8 Spell(swipe_cat pool_resource=1)
-    #rip,cycle_targets=1,if=(!ticking|(remains<9&target.health.pct>25&!talent.sabertooth.enabled)|persistent_multiplier>dot.rip.pmultiplier)&target.time_to_die-remains>tick_time*4&variable.finisher_conditions
+    #rip,cycle_targets=1,if=(!ticking|(remains<RipTimer()&target.health.pct>25&!talent.sabertooth.enabled)|persistent_multiplier>dot.rip.pmultiplier)&target.time_to_die-remains>tick_time*4&variable.finisher_conditions
     if { not target.DebuffPresent(rip_debuff) 
-            or target.DebuffRemaining(rip_debuff) < 9 and target.HealthPercent() > 25 and not Talent(sabertooth_talent) 
+            or target.DebuffRemaining(rip_debuff) < RipTimer() and target.HealthPercent() > 25 and not Talent(sabertooth_talent) 
             or TFMultPred() * PersistentMultiplier(rip_debuff) > target.DebuffPersistentMultiplier(rip_debuff) } 
         and target.TimeToDie() - target.DebuffRemaining(rip_debuff) > target.TickTime(rip_debuff) * 4 
         and finisher_conditions() Spell(rip)
-    #savage_roar,if=(buff.savage_roar.remains<=7.2|(buff.savage_roar.remains<13&talent.jagged_wounds.enabled&target.health.pct>=25))&variable.finisher_conditions
+    #savage_roar,if=(buff.savage_roar.remains<=7.2|(buff.savage_roar.remains<SavageRoarTimer&talent.jagged_wounds.enabled&target.health.pct>=25))&variable.finisher_conditions
     if { BuffRemaining(savage_roar_buff) <= 7.2 
-            or BuffRemaining(savage_roar_buff) < 13 and Talent(jagged_wounds_talent) and target.HealthPercent() >= 25 } 
+            or BuffRemaining(savage_roar_buff) < SavageRoarTimer() and Talent(jagged_wounds_talent) and target.HealthPercent() >= 25 } 
         and finisher_conditions() Spell(savage_roar)
     #swipe_cat,if=combo_points=5&(spell_targets.swipe_cat>=6|(spell_targets.swipe_cat>=3&!talent.bloodtalons.enabled))&variable.finisher_conditions
     if ComboPoints() == 5 
@@ -298,12 +386,12 @@ AddFunction FeralGeneratorMainActions
         if ComboPoints() < 5 
             and { not target.DebuffPresent(rake_debuff) 
                 or not Talent(bloodtalons_talent) and target.DebuffRemaining(rake_debuff) < BaseDuration(rake_debuff) * 0.3 
-                or Talent(bloodtalons_talent) and BuffPresent(bloodtalons_buff) and { not Talent(soul_of_the_forest_talent) and target.DebuffRemaining(rake_debuff) <= 9 
-                                                                                        or target.DebuffRemaining(rake_debuff) <= 5 } 
+                or Talent(bloodtalons_talent) and BuffPresent(bloodtalons_buff) and { not Talent(soul_of_the_forest_talent) and target.DebuffRemaining(rake_debuff) <= RakeTimer() 
+                                                                                        or target.DebuffRemaining(rake_debuff) <= SotfRakeTimer() } 
                 and PersistentMultiplier(rake_debuff) > target.DebuffPersistentMultiplier(rake_debuff) * 0.8 } 
             and target.TimeToDie() - target.DebuffRemaining(rake_debuff) > target.TickTime(rake_debuff) Spell(rake pool_resource=1)
-        #moonfire_cat,cycle_targets=1,if=combo_points<5&(remains<=4.2|(combo_points>2&remains<=9))&target.time_to_die-remains>tick_time*2
-        if ComboPoints() < 5 and { target.DebuffRemaining(moonfire_cat_debuff) <= 4.2 or ComboPoints() > 2 and target.DebuffRemaining(moonfire_cat_debuff) <= 9 } and target.TimeToDie() - target.DebuffRemaining(moonfire_cat_debuff) > target.TickTime(moonfire_cat_debuff) * 2 Spell(moonfire_cat)
+        #moonfire_cat,cycle_targets=1,if=combo_points<5&(remains<=4.2|(combo_points>2&remains<=MoonfireTimer))&target.time_to_die-remains>tick_time*2
+        if ComboPoints() < 5 and { target.DebuffRemaining(moonfire_cat_debuff) <= 4.2 or ComboPoints() > 2 and target.DebuffRemaining(moonfire_cat_debuff) <= MoonfireTimer() } and target.TimeToDie() - target.DebuffRemaining(moonfire_cat_debuff) > target.TickTime(moonfire_cat_debuff) * 2 Spell(moonfire_cat)
         #pool_resource,for_next=1
         #thrash_cat,cycle_targets=1,if=remains<=duration*0.3&spell_targets.swipe_cat>=2
         if target.DebuffRemaining(thrash_cat_debuff) <= BaseDuration(thrash_cat_debuff) * 0.3 
