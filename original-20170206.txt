@@ -26,6 +26,8 @@
 #       Following setting will affect when these are used.
 # Rip/Rake/Moonfire/Savage Roar at x seconds - Refresh dots/buffs within a given window
 #       Refreshing earlier allows for more flexability and probably uptimes, Refreshing closer to pandemic could increase dps slightly
+# Ashamane's only when TF is up - Only suggest Ashamane's when Tiger's Fury is active
+#       Maybe not a dps increase
 
 Include(ovale_common)
 Include(ovale_trinkets_mop)
@@ -34,6 +36,7 @@ Include(ovale_druid_spells)
     SpellAddTargetDebuff(ferocious_bite rip_debuff=refresh_keep_snapshot)
     SpellInfo(incarnation_king_of_the_jungle unusable=1 talent=!incarnation_talent)
 
+AddCheckBox(opt_tf_for_ashamanes "Ashamane's only when TF is up" specialization=feral)
 AddCheckBox(opt_interrupt L(interrupt) default specialization=feral)
 AddCheckBox(opt_melee_range L(not_in_melee_range) specialization=feral)
 AddCheckBox(opt_ashamanes_frenzy_main_action "Ashamane's Frenzy as a main action" default specialization=feral)
@@ -354,6 +357,7 @@ AddFunction FeralGeneratorMainActions
     if CheckBoxOn(opt_ashamanes_frenzy_main_action) 
         and ComboPoints() <= 2 
         and BuffExpires(elunes_guidance_buff) 
+        and { BuffPresent(tigers_fury_buff) or CheckBoxOff(opt_tf_for_ashamanes) } 
         and { BuffPresent(bloodtalons_buff) or not Talent(bloodtalons_talent) } 
         and { BuffPresent(savage_roar_buff) or not Talent(savage_roar_talent) }
         and target.TimeToDie(more 20) Spell(ashamanes_frenzy)
@@ -451,6 +455,7 @@ AddFunction FeralDefaultShortCdActions
     if CheckBoxOff(opt_ashamanes_frenzy_main_action) 
         and ComboPoints() <= 2 
         and BuffExpires(elunes_guidance_buff) 
+        and { BuffPresent(tigers_fury_buff) or CheckBoxOff(opt_tf_for_ashamanes) } 
         and { BuffPresent(bloodtalons_buff) or not Talent(bloodtalons_talent) } 
         and { BuffPresent(savage_roar_buff) or not Talent(savage_roar_talent) } Spell(ashamanes_frenzy)
     #pool_resource,if=talent.elunes_guidance.enabled&combo_points=0&energy<action.ferocious_bite.cost+25-energy.regen*cooldown.elunes_guidance.remains
