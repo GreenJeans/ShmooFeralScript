@@ -34,6 +34,8 @@
 #       Bad for mitigation, good for dps
 # Suggest Shred at 5 cp with Berserk - While zerk/incarnation is active, spam shred, only stopping to refresh rake, roar, or rip (with BT), nothing else
 #       Something to try @Nanaki - http://www.fluiddruid.net/forum/viewtopic.php?f=3&t=5709&sid=ba81b3ad75462b66a14c8486c19d7123&start=375#p36492
+# st Thrash if ooc proc with t19 4pc - If using T19 4piece, suggest thrash on single target when Ooc procs
+#       Slight dps upgrade, unforgiving
 
 Include(ovale_common)
 Include(ovale_trinkets_mop)
@@ -42,6 +44,8 @@ Include(ovale_druid_spells)
     SpellAddTargetDebuff(ferocious_bite rip_debuff=refresh_keep_snapshot)
     SpellInfo(incarnation_king_of_the_jungle unusable=1 talent=!incarnation_talent)
 
+
+AddCheckBox(opt_thrash_on_st "st Thrash if ooc proc with t19 4pc" specialization=feral)
 AddCheckBox(opt_shred_spam "Suggest Shred at 5 cp with Berserk" specialization=feral)
 AddCheckBox(opt_trinket_on_cd "Suggest trinket use on cooldown" specialization=feral)
 AddCheckBox(opt_tf_for_ashamanes "Ashamane's only when TF is up" specialization=feral)
@@ -466,9 +470,8 @@ AddFunction FeralGeneratorMainActions
         if ComboPoints() < 5 and { target.DebuffRemaining(moonfire_cat_debuff) <= 4.2 or ComboPoints() > 2 and target.DebuffRemaining(moonfire_cat_debuff) <= MoonfireTimer() } and target.TimeToDie() - target.DebuffRemaining(moonfire_cat_debuff) > target.TickTime(moonfire_cat_debuff) * 2 Spell(moonfire_cat)
         #pool_resource,for_next=1
         #thrash_cat,cycle_targets=1,if=remains<=duration*0.3&spell_targets.swipe_cat>=2
-        if target.DebuffRemaining(thrash_cat_debuff) <= BaseDuration(thrash_cat_debuff) * 0.3 
-            and ComboPoints() < 5 
-            and Enemies() >= 2 Spell(thrash_cat pool_resource=1)
+        if target.DebuffRemaining(thrash_cat_debuff) <= BaseDuration(thrash_cat_debuff) * 0.3 and ComboPoints() < 5 
+			and { Enemies() >= 2 or { CheckBoxOn(opt_thrash_on_st) and ArmorSetBonus(T19 4) and BuffPresent(clearcasting_buff) } } Spell(thrash_cat pool_resource=1)
         #brutal_slash,if=combo_points<5&((raid_event.adds.exists&raid_event.adds.in>(1+max_charges-charges_fractional)*15)|(!raid_event.adds.exists&buff.tigers_fury.up))
         # if ComboPoints() < 5 and { False(raid_event_adds_exists) and 600 > { 1 + SpellMaxCharges(brutal_slash) - Charges(brutal_slash count=0) } * 15 or not False(raid_event_adds_exists) and BuffPresent(tigers_fury_buff) } Spell(brutal_slash)
         #swipe_cat,if=combo_points<5&spell_targets.swipe_cat>=3
