@@ -421,11 +421,10 @@ AddFunction FeralFinisherMainActions
 
 AddFunction FeralGeneratorMainActions
 {
-    #brutal_slash,if=spell_targets.brutal_slash>desired_targets&combo_points<5
-    if Enemies() >= BrutalSlashDesiredTargets() 
+    # brutal slash if (enemies>=desired_min_targets or (at 3 charges and checkbox is enabled)) and comboPoints<5 and (TF is active or the checkbox is disabled)
+    if { Enemies() >= BrutalSlashDesiredTargets() or { Charges(brutal_slash) == 3 and CheckBoxOn(opt_brutal_slash_use_at_three_always) } }
         and ComboPoints() < 5 
-        and { { BuffPresent(tigers_fury_buff) or CheckBoxOff(opt_burtal_slash_use_with_tigers_fury) }
-            or { Charges(brutal_slash) == 3 and CheckBoxOn(opt_brutal_slash_use_at_three_always) } } Spell(brutal_slash)
+        and { BuffPresent(tigers_fury_buff) or CheckBoxOff(opt_burtal_slash_use_with_tigers_fury) or { Charges(brutal_slash) == 3 and CheckBoxOn(opt_brutal_slash_use_at_three_always) } } Spell(brutal_slash)
     #ashamanes_frenzy,if=combo_points<=2&buff.elunes_guidance.down&(buff.bloodtalons.up|!talent.bloodtalons.enabled)&(buff.savage_roar.up|!talent.savage_roar.enabled)
     if CheckBoxOn(opt_ashamanes_frenzy_main_action) 
         and ComboPoints() <= 2 
