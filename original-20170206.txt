@@ -28,6 +28,8 @@
 #       Refreshing earlier allows for more flexability and probably uptimes, Refreshing closer to pandemic could increase dps slightly
 # Ashamane's only when TF is up - Only suggest Ashamane's when Tiger's Fury is active
 #       Maybe not a dps increase
+# Suggest Trinket use on Cooldown - instead of syncing with damage buffs
+#       Good for trinkets that don't get buffed (Kil'jaeden's for instance)
 
 Include(ovale_common)
 Include(ovale_trinkets_mop)
@@ -36,6 +38,7 @@ Include(ovale_druid_spells)
     SpellAddTargetDebuff(ferocious_bite rip_debuff=refresh_keep_snapshot)
     SpellInfo(incarnation_king_of_the_jungle unusable=1 talent=!incarnation_talent)
 
+AddCheckBox(opt_trinket_on_cd "Suggest trinket use on cooldown" specialization=feral)
 AddCheckBox(opt_tf_for_ashamanes "Ashamane's only when TF is up" specialization=feral)
 AddCheckBox(opt_interrupt L(interrupt) default specialization=feral)
 AddCheckBox(opt_melee_range L(not_in_melee_range) specialization=feral)
@@ -495,8 +498,8 @@ AddFunction FeralDefaultCdActions
     #use_item,slot=trinket2,if=(buff.tigers_fury.up&(target.time_to_die>trinket.stat.any.cooldown|target.time_to_die<45))|buff.incarnation.remains>20
     if BuffPresent(tigers_fury_buff) 
         and { target.TimeToDie() > BuffCooldownDuration(trinket_stat_any_buff) or target.TimeToDie() < 45 } 
-        or BuffRemaining(incarnation_king_of_the_jungle_buff) > 20 FeralUseItemActions()
-        
+        or BuffRemaining(incarnation_king_of_the_jungle_buff) > 20 
+        or CheckBoxOn(opt_trinket_on_cd) FeralUseItemActions()
     #call_action_list,name=generator
     unless Enemies() > Enemies(tagged=1) and ComboPoints() < 5 and Spell(brutal_slash) or ComboPoints() <= 2 and BuffExpires(elunes_guidance_buff) and { BuffPresent(bloodtalons_buff) or not Talent(bloodtalons_talent) } and { BuffPresent(savage_roar_buff) or not Talent(savage_roar_talent) } and Spell(ashamanes_frenzy)
     {
